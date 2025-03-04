@@ -1,0 +1,35 @@
+{
+  "Miscellaneous":{
+    "name": "Using fixtures to represent data",
+    "body": "Fixtures are a great way to mock data for responses to routes"
+  },
+  "contactInformation":{
+    "email": "hello@cypress.io",
+    "phone": "1234567890"
+  },
+  "shippingAddress":{
+    "firstName": "vikramgoud",
+    "lastName":"kuppala",
+    "Address":"4520 ESSEN LN",
+    "city":"CUMMING",
+    "phone number":"4655687678",
+    "country":"United States",
+    "State / Province":"Georgia",
+    "postal code":"30041"
+  },
+  "BillingAddress":{
+    "firstName": "vikramgoud",
+    "lastName":"kuppala",
+    "Address":"4520 Essen Ln",
+    "phone number":"(465) 568-7678",
+    "city":"cumming",
+    "country":"united states",
+    "State / Province":"Georgia",
+    "postal code":"30041"
+  },
+  "card Details":{
+    "card number":"4111 1111 1111 1111",
+    "expiry":"10/26",
+    "cvv":"111"
+  }
+}
