@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "target": "ES6",
+      "module": "Node16",
+      "moduleResolution": "node16",
+      "esModuleInterop": true,
+      "strict": true,
+      "types": ["cypress", "node"],
+      "skipLibCheck": true,
+      "forceConsistentCasingInFileNames": true
+    },
+    "include": [
+      "cypress/**/*.ts", // Include all TypeScript files in the cypress folder
+      "cypress.config.ts" // Include the Cypress configuration file
+    ]
+  }
+  
