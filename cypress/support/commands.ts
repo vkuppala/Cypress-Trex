@@ -37,3 +37,4 @@
 // }
 import "cypress-real-events"
 import "cypress-xpath"
+import "cypress-iframe"

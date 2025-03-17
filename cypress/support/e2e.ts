@@ -15,3 +15,9 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+
+Cypress.on('log:changed', (log) =>{
+    if(!log.name.includes('log')){
+        return false;
+    }
+})

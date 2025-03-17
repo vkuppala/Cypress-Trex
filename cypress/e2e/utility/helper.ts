@@ -3,11 +3,16 @@ import { Before } from '@badeball/cypress-cucumber-preprocessor'
 export class Helper {
     readonly spinner = "#root div[class*='loader_circle']"
     static dataRead: any  // Declare dataRead as a class property
+    orderFilePath: string = "cypress/fixtures/orderList.csv"
+
+    private readonly academyToolContainer = ".cmp-academy-tool-grid-container"
+    private readonly experienceFragmentCTA = "div[id^='experiencefragment'][class$='conversion-cta']"
+    private readonly footerSection = "div[id^='experiencefragment'][class$='--footer'] .cmp-linklist"
 
     constructor() {
         Before(function () {
             // Intercept network requests (if needed for your tests)
-            cy.intercept({ resourceType: /xhr|fetch/ }, { log: false })
+            cy.intercept({ resourceType: /xhr|fetch|-assert/ }, { log: false })
 
             // Read the fixture file asynchronously and assign it to the class property
             cy.fixture('example').then((data) => {
@@ -17,11 +22,11 @@ export class Helper {
     }
 
     // Modify getJsonData to return the wrapped value (Chainable) correctly
-    getJsonData(infoType:string,key: string) {
-        if(Helper.dataRead && Helper.dataRead[infoType][key] !== undefined){
+    getJsonData(infoType: string, key: string) {
+        if (Helper.dataRead && Helper.dataRead[infoType][key] !== undefined) {
             return Helper.dataRead[infoType][key] // Return the value wrapped in a Cypress Chainable
         }
-        else{
+        else {
             throw new Error(`key ${key} is not found in JSON data`)
         }
     }
@@ -30,10 +35,10 @@ export class Helper {
         cy.get(this.spinner, { timeout: 120000 }).should('not.exist')
     }
 
-    waitForGivenTime(amount:number, unit:string){
+    waitForGivenTime(amount: number, unit: string) {
         switch (unit) {
             case "seconds":
-                cy.wait(amount*1000)
+                cy.wait(amount * 1000)
                 break;
             case "minutes":
                 cy.wait(amount * 60 * 1000)
@@ -42,5 +47,67 @@ export class Helper {
                 break;
         }
         cy.wait
+    }
+
+    saveOrderNumber(orderNumber: string) {
+        const headers = "Order Number, Timestamp"
+        const newRow = `${orderNumber}, ${new Date().toISOString()}`
+        cy.task('fileExists', this.orderFilePath).then((exists) => {
+            if (exists) {
+                cy.readFile(this.orderFilePath, 'utf8').then((content) => {
+                    const newContent = content + `${newRow}`
+                    cy.writeFile(this.orderFilePath, newContent)
+                })
+            }
+            else {
+                cy.writeFile(this.orderFilePath, headers + newRow)
+            }
+        })
+        cy.readFile(this.orderFilePath).should('contain', orderNumber)
+    }
+
+    validateAcademyToolContainerTitle(title: string) {
+        cy.get(this.academyToolContainer).find(`[class$='-title']`).should('be.visible')
+            .should('have.text', title)
+        cy.log(`Academy tool has title ${title} available`)
+    }
+
+    validateAcademyToolContainerItemTitle(appName: string[]) {
+        cy.get(this.academyToolContainer).find(`[class$='subtitle']`)
+            .should('have.length', appName.length)
+            .each(($el, index) => {
+                expect($el.text().trim()).to.eq(appName[index])
+                cy.log(`${appName[index]} tool is visible as option under academy tool`)
+            })
+    }
+
+    validateExperienceFragmentCTA(fragmentName: string[]) {
+        cy.get(this.experienceFragmentCTA).find('.cmp-conversion-ctas a > :is(h2,h3)')
+            .should('have.length', fragmentName.length, { log: false })
+            .each(($el, index) => {
+                expect($el.text().trim()).to.eq(fragmentName[index])
+                cy.log(`${fragmentName[index]} lable is displayed at page`)
+            })
+    }
+
+    validateFooterSection(title: string, options: string[]) {
+        cy.get(this.footerSection).find('.cmp-linklist__title a')
+            .filter((_, elem) => elem.innerText.trim() === title)
+            .should('be.visible')
+            .should('have.text', title)
+        cy.log(`'${title}' title is visible in footer section`)
+
+        cy.get(this.footerSection).find('.cmp-linklist__title')
+            .filter((_, elem) => elem.innerText.trim() === title)
+            // .siblings()
+            .siblings('.cmp-linklist__listitems').find('.cmp-linklist__itemtext')
+            .find('a, span')
+            .each((elem, index) => {
+                cy.wrap(elem).invoke('text').then((text) => {
+                    expect(text.trim()).to.eq(options[index])
+                    cy.log(`${options[index]} link is available under title '${title}'`)
+                })
+
+            })
     }
 }

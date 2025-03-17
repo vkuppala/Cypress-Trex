@@ -31,4 +31,8 @@ Then("click on signIn button to login", () => {
     signIn.clickSignInButton();
 })
 
+Given(`User navigates to the url {string}`, (url:string) =>{
+    login.navigateGivenURL(url)
+})
+
 

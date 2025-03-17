@@ -37,7 +37,7 @@ export class ShopNow {
     }
 
     validateProductAddInCart(productName: string) {
-        cy.get(this.cartIconText).should('be.visible');
+        cy.get(this.cartIconText, {timeout:30000}).should('be.visible');
         cy.log(`Product text is visible on mini cart`)
         cy.get(this.cartIconText).should('contain.text', productName)
         cy.log(`product ${productName} is successfully added`)

@@ -1,7 +1,9 @@
 import { Then } from "@badeball/cypress-cucumber-preprocessor";
 import { GuestCheckout } from "../pages/guestCheckoutPage";
+import { OrderConfirmation } from "../pages/orderConfirmationPage";
 
 var guestPage: GuestCheckout = new GuestCheckout();
+var orderPage: OrderConfirmation = new OrderConfirmation();
 
 Then(`enter the contact information`, () => {
     guestPage.getHelperComponent.waitForLoadingToComplete()
@@ -40,4 +42,20 @@ Then(`click checkbox for same address as shipping for billing`, () => {
     guestPage.validateBillToLabel();
     guestPage.getHelperComponent.waitForGivenTime(5, "seconds")
     guestPage.getHelperComponent.waitForLoadingToComplete();
+})
+
+Then(`enter the card details on checkout page`, () => {
+    guestPage.enterCardNumber()
+    guestPage.enterCVVNUmber();
+    guestPage.enterExpiryDate()
+})
+
+Then(`place the order and get order number`, () => {
+    guestPage.clickPlaceOrderButton();
+    guestPage.getHelperComponent.waitForLoadingToComplete();
+    orderPage.getOrderNumber()
+    cy.then(() =>{
+        cy.log(OrderConfirmation.order)
+        orderPage.getHelperComponent.saveOrderNumber(OrderConfirmation.order)
+    });
 })

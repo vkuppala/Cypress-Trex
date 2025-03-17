@@ -4,7 +4,6 @@ Feature: Validate the guest checkout
 Background: Login
 Given Navigate to login page
 
-@run
 Scenario: Select product and Navigate to checkout page
 When open "Shop Trex" tab
 Then click on "Shop Now" option from "Shop Trex" list
@@ -22,3 +21,5 @@ Then enter the contact information
 Then enter the shipping address information
 Then click continue on shipping method
 Then click checkbox for same address as shipping for billing
+Then enter the card details on checkout page
+Then place the order and get order number
