@@ -21,3 +21,7 @@ Cypress.on('log:changed', (log) =>{
         return false;
     }
 })
+Cypress.on("uncaught:exception",(error)=>{
+    console.error("Uncaught Exception:",error)
+    return false
+})

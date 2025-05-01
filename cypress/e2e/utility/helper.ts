@@ -8,6 +8,9 @@ export class Helper {
     private readonly academyToolContainer = ".cmp-academy-tool-grid-container"
     private readonly experienceFragmentCTA = "div[id^='experiencefragment'][class$='conversion-cta']"
     private readonly footerSection = "div[id^='experiencefragment'][class$='--footer'] .cmp-linklist"
+    private readonly pageHeading = "div h1"
+    private readonly inspiration = "#inspiration"
+    private readonly cardContainer = ".cmp-category-card-container "
 
     constructor() {
         Before(function () {
@@ -55,7 +58,7 @@ export class Helper {
         cy.task('fileExists', this.orderFilePath).then((exists) => {
             if (exists) {
                 cy.readFile(this.orderFilePath, 'utf8').then((content) => {
-                    const newContent = content + `${newRow}`
+                    const newContent = content + `\n${newRow}`
                     cy.writeFile(this.orderFilePath, newContent)
                 })
             }
@@ -109,5 +112,46 @@ export class Helper {
                 })
 
             })
+    }
+
+    validatePageHeading(headingText: string){
+        cy.get(this.pageHeading).should('be.visible').should('have.text', headingText);
+        cy.log(`Page heading "${headingText}" is visible and validated`)
+    }
+
+    /////////////////////////////////////////////////////////////////////
+
+    async validateInspirationHeading(headingText:string){
+        cy.get(this.inspiration).find('.text h2').should('be.visible').should('have.text', headingText)
+        cy.log(`Inspiration section have sub heading text ${headingText} is visible`)
+    }
+
+    async validateInspirationSubHeading(subHeadingText:string){
+        cy.get(this.inspiration).find('.text h3').should('be.visible').should('have.text', subHeadingText)
+        cy.log(`Inspiration section have sub heading text ${subHeadingText} is visible`)
+    }
+
+    async validateInspirationImageListCount(){
+        cy.get(this.inspiration).find(`div[role='list']>div`).should('be.visible').should('have.length.greaterThan',0)
+        cy.log(`Inspiration sections have images available`)
+    }
+
+    async validateCardContainerTitle(title:string[]){
+        cy.get(this.cardContainer).find(`.cmp-category-card-title`)
+        .each((element, index) =>{
+            expect(element.text().trim()).to.eq(title[index])
+            cy.log(`Card container having image title ${title[index]} is visible on lineage page`)
+            cy.get(this.cardContainer).find(`.cmp-category-card-description`).eq(index)
+            .should('have.text', 'Explore')
+            cy.log(`Card container with title ${title[index]} having description as "Explore" is visible`)
+        })
+    }
+
+    async validateCardContainerDescription(description:string[]){
+        cy.get(this.cardContainer).find(``)
+        .each((element, index) =>{
+            expect(element.text().trim()).to.eq(description[index])
+            cy.log(`Card container having image title ${description[index]} is visible on lineage page`)
+        })
     }
 }

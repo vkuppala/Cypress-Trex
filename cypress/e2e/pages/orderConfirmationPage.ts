@@ -12,7 +12,9 @@ export class OrderConfirmation {
     }
 
     getOrderNumber() { 
-        cy.get(this.orderNumber).should('be.visible')
+        cy.wait(10000)
+        this.getHelperComponent.waitForLoadingToComplete()
+        cy.get(this.orderNumber).should('be.visible',{timeout:20000})
         cy.log(`Oder number is visible`)
         cy.get(this.orderNumber).invoke('text').then((val: string) =>{
             OrderConfirmation.order = val.trim();

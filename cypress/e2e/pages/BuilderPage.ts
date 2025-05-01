@@ -4,17 +4,11 @@ export class Builder{
 
     helperComponent: Helper = new Helper();
 
-    private readonly pageHeading = "div h1"
+    
     private readonly pageSearchForm = ".cmp-builder-search-bar__form-pieces"
     private readonly pageSearchTrexPro = ".cmp-builder-search-bar__trex-pro"
     private readonly pageSearchTextProItem = ".cmp-builder-search-bar__trex-pro-adv-item"
     private readonly pageSearchThumbCard = ".trex-pro__thumb-card"
-
-
-    validatePageHeading(headingText: string){
-        cy.get(this.pageHeading).should('be.visible').should('have.text', headingText);
-        cy.log(`Builder page heading "${headingText}" is visible and validated`)
-    }
 
     validateSearchText(placeHolderText:string){
         cy.get(this.pageSearchForm).find(`#txtSearch`).should('be.visible')

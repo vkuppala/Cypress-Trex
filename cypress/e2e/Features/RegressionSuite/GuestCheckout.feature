@@ -1,4 +1,4 @@
-@shop
+@shop 
 Feature: Validate the guest checkout
 
 Background: Login

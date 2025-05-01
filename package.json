@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "npx cypress open --e2e --env tags=@run"
+    "test": "npx cypress open --e2e --env tags=@run",
+    "smoke": "npx cypress open --e2e --env tags=@smoke"
   },
   "keywords": [],
   "author": "",

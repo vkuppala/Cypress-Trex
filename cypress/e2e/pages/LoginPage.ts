@@ -38,6 +38,7 @@ export class Login {
     }
 
     navigateGivenURL(url: string) {
+        cy.log(`url is ${url}`)
         cy.visit(url, {
             auth: {
                 username: 'trex-web-user',

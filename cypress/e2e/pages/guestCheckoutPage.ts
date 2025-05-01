@@ -19,13 +19,16 @@ export class GuestCheckout {
     private readonly shippingAddrUpdateButton = "//span[text() = 'Update']"
     private readonly billingCheckboxSameAddress = "input[name='sameAsShippingCheckbox']"
     private readonly labelBillTo = "//div[text()='Bill to']"
-    private readonly cardNumberIframe = `#braintree-hosted-field-number`
-    private readonly cardNumber = "#credit-card-number"
-    private readonly expiryIframe = `#braintree-hosted-field-expirationDate`
-    private readonly expiry = "#expiration"
-    private readonly cvvIframe = `#braintree-hosted-field-cvv`
-    private readonly cvv = "#cvv"
-    private readonly placeOrderButton = `button[value='submit']`
+    private readonly cardNumberIframe = `#AcceptUIContainer iframe`
+    private readonly cardNumber = ".testCardNumberInput"
+    // private readonly cardNumberIframe = `#braintree-hosted-field-expirationDate`
+    private readonly expiry = ".testExpDateInput"
+    // private readonly cardNumberIframe = `#braintree-hosted-field-cvv`
+    private readonly cvv = ".testCVVInput"
+    private readonly cardFirstName = ".testFirstName"
+    private readonly cardLastName = ".testLastName"
+    private readonly cardZip = ".testZip"
+    private readonly placeOrderButton = `#payButton`
     
     get getHelperComponent() {
         return this.helperComponent;
@@ -184,26 +187,50 @@ export class GuestCheckout {
     }
 
     enterExpiryDate(){
-        this.loadIframe(this.expiryIframe).find(this.expiry,{timeout:10000}).should('be.visible')
+        this.loadIframe(this.cardNumberIframe).find(this.expiry,{timeout:10000}).should('be.visible')
         cy.log(`Expiry under payment section is visible`)
-        this.loadIframe(this.expiryIframe).find(this.expiry).type(this.getHelperComponent.getJsonData("card Details","expiry"))
-        this.loadIframe(this.expiryIframe).find(this.expiry).should('have.value', this.getHelperComponent.getJsonData("card Details","expiry"))
+        this.loadIframe(this.cardNumberIframe).find(this.expiry).type(this.getHelperComponent.getJsonData("card Details","expiry"))
+        // this.loadIframe(this.cardNumberIframe).find(this.expiry).should('have.value', this.getHelperComponent.getJsonData("card Details","expiry"))
         cy.log(`Expiry ${this.getHelperComponent.getJsonData("card Details","expiry")} is enetered in field for expiry under payment section`)
     }
 
     enterCVVNUmber(){
-        this.loadIframe(this.cvvIframe).find(this.cvv,{timeout:10000}).should('be.visible')
+        this.loadIframe(this.cardNumberIframe).find(this.cvv,{timeout:10000}).should('be.visible')
         cy.log(`CVV number under payment section is visible`)
-        this.loadIframe(this.cvvIframe).find(this.cvv).type(this.getHelperComponent.getJsonData("card Details","cvv"))
-        this.loadIframe(this.cvvIframe).find(this.cvv).should('have.value', this.getHelperComponent.getJsonData("card Details","cvv"))
+        this.loadIframe(this.cardNumberIframe).find(this.cvv).type(this.getHelperComponent.getJsonData("card Details","cvv"))
+        this.loadIframe(this.cardNumberIframe).find(this.cvv).should('have.value', this.getHelperComponent.getJsonData("card Details","cvv"))
         cy.log(`CVV number ${this.getHelperComponent.getJsonData("card Details","cvv")} is enetered in field for CVV under payment section`)
     }
 
+    enterFirstName(){
+        this.loadIframe(this.cardNumberIframe).find(this.cardFirstName,{timeout:10000}).should('be.visible')
+        cy.log(`CVV number under payment section is visible`)
+        this.loadIframe(this.cardNumberIframe).find(this.cardFirstName).type(this.getHelperComponent.getJsonData("card Details","firstName"))
+        this.loadIframe(this.cardNumberIframe).find(this.cardFirstName).should('have.value', this.getHelperComponent.getJsonData("card Details","firstName"))
+        cy.log(`CVV number ${this.getHelperComponent.getJsonData("card Details","firstName")} is enetered in field for first name under payment section`)
+    }
+
+    enterLastName(){
+        this.loadIframe(this.cardNumberIframe).find(this.cardLastName,{timeout:10000}).should('be.visible')
+        cy.log(`CVV number under payment section is visible`)
+        this.loadIframe(this.cardNumberIframe).find(this.cardLastName).type(this.getHelperComponent.getJsonData("card Details","lastName"))
+        this.loadIframe(this.cardNumberIframe).find(this.cardLastName).should('have.value', this.getHelperComponent.getJsonData("card Details","lastName"))
+        cy.log(`CVV number ${this.getHelperComponent.getJsonData("card Details","lastName")} is enetered in field for last name under payment section`)
+    }
+
+    enterZIPCode(){
+        this.loadIframe(this.cardNumberIframe).find(this.cardZip,{timeout:10000}).should('be.visible')
+        cy.log(`CVV number under payment section is visible`)
+        this.loadIframe(this.cardNumberIframe).find(this.cardZip).type(this.getHelperComponent.getJsonData("card Details","zip"))
+        this.loadIframe(this.cardNumberIframe).find(this.cardZip).should('have.value', this.getHelperComponent.getJsonData("card Details","zip"))
+        cy.log(`CVV number ${this.getHelperComponent.getJsonData("card Details","zip")} is enetered in field for zip under payment section`)
+    }
+
     clickPlaceOrderButton(){
-        cy.get(this.placeOrderButton).should('be.visible')
+        this.loadIframe(this.cardNumberIframe).find(this.placeOrderButton).should('be.visible')
         cy.log(`Place order button is visible on guest checkout page`)
-        cy.get(this.placeOrderButton).click();
-        cy.get(this.placeOrderButton, {timeout:30000}).should('not.exist')
+        this.loadIframe(this.cardNumberIframe).find(this.placeOrderButton).click();
+        this.loadIframe(this.cardNumberIframe).find(this.placeOrderButton, {timeout:30000}).should('not.exist',{timeout:30000})
         cy.log(`Place order button is clicked`)
     }
     

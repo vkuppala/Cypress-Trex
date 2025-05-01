@@ -46,12 +46,16 @@ Then(`click checkbox for same address as shipping for billing`, () => {
 
 Then(`enter the card details on checkout page`, () => {
     guestPage.enterCardNumber()
-    guestPage.enterCVVNUmber();
     guestPage.enterExpiryDate()
+    guestPage.enterCVVNUmber();
+    guestPage.enterFirstName();
+    guestPage.enterLastName();
+    guestPage.enterZIPCode();
 })
 
 Then(`place the order and get order number`, () => {
     guestPage.clickPlaceOrderButton();
+    cy.wait(5000)
     guestPage.getHelperComponent.waitForLoadingToComplete();
     orderPage.getOrderNumber()
     cy.then(() =>{

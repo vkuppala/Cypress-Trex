@@ -4,7 +4,7 @@ import { Builder } from "../pages/BuilderPage";
 const builderPage:Builder = new Builder();
 
 Then(`validate the heading of builder page {string}`, (headingText: string) =>{
-    builderPage.validatePageHeading(headingText)
+    builderPage.helperComponent.validatePageHeading(headingText)
 })
 
 Then(`validate the input search field with value as {string}`, (placeHolderText: string) =>{
