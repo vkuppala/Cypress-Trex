@@ -115,7 +115,7 @@ export class Helper {
     }
 
     validatePageHeading(headingText: string){
-        cy.get(this.pageHeading).should('be.visible').should('have.text', headingText);
+        cy.get(this.pageHeading).eq(0).should('be.visible').should('have.text', headingText);
         cy.log(`Page heading "${headingText}" is visible and validated`)
     }
 

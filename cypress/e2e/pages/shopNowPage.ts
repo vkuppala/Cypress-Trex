@@ -7,7 +7,7 @@ import { build } from "esbuild";
 export class ShopNow {
 
     helperComponent: Helper = new Helper();
-    public prodValue: number = 0;;
+    public static prodValue: number = 0;;
 
 
     private readonly addToCartButton = "//div[contains(text(),'productName')]//ancestor::div[@class='cmp-product-card__block']//button[contains(@class,'add-to-cart')]";
@@ -75,8 +75,8 @@ export class ShopNow {
     getProductPrice(productName: string) {
         cy.xpath(this.productAmount.replace('productName', productName)).invoke('text')
             .then((elem: string) => {
-                this.prodValue = parseFloat(elem.replace(/[^0-9.-]+/g, ""))
-                cy.log(`The price of the ${productName} is ${this.prodValue}`)
+                ShopNow.prodValue = parseFloat(elem.replace(/[^0-9.-]+/g, ""))
+                cy.log(`The price of the ${productName} is ${ShopNow.prodValue}`)
             })
     }
 
@@ -88,7 +88,7 @@ export class ShopNow {
     validateTotalAmountCartIcon(quantity: number) {
         cy.xpath(this.cartIconSubTotal).invoke('text')
             .then(elem => {
-                expect(this.prodValue * quantity).to.equal(parseFloat(elem))
+                expect(ShopNow.prodValue * quantity).to.equal(parseFloat(elem))
                 cy.log(`Subtotal of amount $${elem} in mini cart icon is validated successfully`)
             })
     }
